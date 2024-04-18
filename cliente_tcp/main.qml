@@ -1,7 +1,7 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
 import QtQuick.Controls 2.14
-//import QtNetwork 2.14
+import CustomTypes 1.0
 
 Window {
     id: window
@@ -86,6 +86,11 @@ Window {
         placeholderText: qsTr("port")
     }
 
+    // Crear una instancia de TCPSocket
+    TCPSocket {
+        id: tcpSocket // asignamos un ID para referenciarlo
+    }
+
     Button {
         id: button_connect
         x: 432
@@ -94,27 +99,14 @@ Window {
         height: 40
         text: qsTr("Connect")
 
+        //Conectar al servidor
         onClicked: {
-            var ip_origen = text_ip.text
-            var puerto_origen = parseInt(text_puerto.text)
-
-
-            // Crear un objeto QTcpSocket para la conexión TCP
-            var socket = new QtNetwork.QTcpSocket();
-
-            // Conectar a la dirección IP y el puerto proporcionados
-            socket.connectToHost(ip_origen, puerto_origen);
-
-            // Manejar eventos de conexión
-            socket.connected.connect(function() {
-                console.log("Conexión establecida con éxito.");
-                // Aquí puedes agregar acciones adicionales que deseas realizar cuando la conexión se establece con éxito.
-            });
-
-            socket.error.connect(function(error) {
-                console.error("Error al conectar:", error);
-                // Aquí puedes manejar errores de conexión, como conexión rechazada o timeout.
-            });
+            // Obtener el host y el puerto de los campos de texto
+            console.log("IP recibida:", text_ip.text);
+            console.log("Puerto Recibido: ", text_puerto.text);
+            tcpSocket.host = text_ip.text
+            tcpSocket.port = parseInt(text_puerto.text)
+            tcpSocket.connect()
         }
     }
 }
