@@ -27,6 +27,7 @@ private:
     QTcpSocket* socket;
 };
 
+
 class Chat : public QTcpServer {
     Q_OBJECT
 

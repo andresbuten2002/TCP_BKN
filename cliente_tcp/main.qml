@@ -10,7 +10,7 @@ Window {
     height: 480
     title: qsTr("Chat Grupal")
 
-    property bool nickRequested: false // Bandera para rastrear si el servidor ha solicitado el nick
+    //property bool nickRequested: false // Bandera para rastrear si el servidor ha solicitado el nick
 
     Button {
         id: button_send
@@ -62,7 +62,7 @@ Window {
         width: 335
         height: 40
         placeholderText: qsTr("Write here...")
-        enabled: nickRequested // Habilita el TextField cuando se solicita el nick
+        //enabled: nickRequested // Habilita el TextField cuando se solicita el nick
     }
 
     Text {
@@ -110,17 +110,17 @@ Window {
             // Habilitar el campo de texto text_mensaje
             text_send.visible = true
             console.log("Conectado al Servidor");
+            // Agregar el nick del cliente recién conectado a la lista
+            connectedClients.push(text_send.text);
+            // Actualizar la interfaz de usuario
+            updateConnectedClients();
         }
         onRead: {
             var receivedMessage = message.toString().trim();
             console.log("Mensaje recibido:", receivedMessage);
-            if (!window.nickRequested) {
-                // Si el servidor solicita el nick, establecer la bandera y agregar la solicitud al área de chat
-                window.nickRequested = true;
-                text_chat.text += "Por favor ingresa tu nick:" + "\n";
-            } else {
-                text_chat.text += receivedMessage + "\n";
-            }
+
+            text_chat.text += receivedMessage + "\n";
+            //window.nickRequested = true;
         }
     }
 
@@ -140,6 +140,25 @@ Window {
             tcpSocket.host = text_ip.text
             tcpSocket.port = parseInt(text_puerto.text)
             tcpSocket.connect()
+        }
+    }
+
+    Rectangle {
+        id: marco_conectados
+        x: 432
+        y: 127
+        width: 152
+        height: 259
+        color: "#d7eef1"
+        radius: 6
+        border.color: "#599899"
+        border.width: 2
+        Text {
+            id: conectados
+            x: 8
+            y: 8
+            text: qsTr("")
+            font.pixelSize: 12
         }
     }
 }
