@@ -1,4 +1,4 @@
-#ifndef QML_SOCKETS_TCP
+﻿#ifndef QML_SOCKETS_TCP
 #define QML_SOCKETS_TCP
 
 #include <QtNetwork>
@@ -68,7 +68,7 @@ public slots:
   { m_socket->disconnectFromHost(); }
 
   void write(QString message)
-  { m_socket->write(message.toLocal8Bit()); }
+  { m_socket->write(message.toUtf8()); }
 
 public:
   QString m_host;

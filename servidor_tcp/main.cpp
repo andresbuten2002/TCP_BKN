@@ -61,10 +61,10 @@ private slots:
             if (user->obtenerNick().isEmpty()) {
                 // Si el usuario no tiene un nick, establecerlo
                 user->establecerNick(message);
-                broadcast(QString("%1 se ha unido al chat.").arg(user->obtenerNick()), user);
+                broadcast(QString("%1 se ha unido al chat.").arg(user->obtenerNick()));
             } else {
                 // Si tiene un nick, enviar el mensaje a todos los usuarios
-                broadcast(QString("%1: %2").arg(user->obtenerNick(), message), user);
+                broadcast(QString("%1: %2").arg(user->obtenerNick(), message));
             }
         }
     }
@@ -76,11 +76,9 @@ private:
         user->obtenerSocket()->write(message.toUtf8());
     }
 
-    void broadcast(const QString &message, Usuario* sender) {
+    void broadcast(const QString &message) {
         for (Usuario* user : usuarios) {
-            if (user != sender) {
                 sendToUser(user, message.toUtf8());
-            }
         }
     }
 };

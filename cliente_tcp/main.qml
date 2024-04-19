@@ -10,13 +10,28 @@ Window {
     height: 480
     title: qsTr("Chat Grupal")
 
+    property bool nickRequested: false // Bandera para rastrear si el servidor ha solicitado el nick
+
     Button {
-        id: button
+        id: button_send
         x: 432
         y: 412
         width: 152
         height: 40
         text: qsTr("Send")
+        onClicked: {
+            var message = text_send.text;
+            console.log("Enviando mensaje:", message);
+            tcpSocket.write(message + "\n");
+            //updateChat("Yo:" + message)
+            text_send.text = "" // Limpiar el campo de texto después de enviar el mensaje
+        }
+        //enabled: nickRequested // El botón solo está habilitado cuando se solicita el nick
+    }
+
+    function updateChat(message) {
+        // Agrega el mensaje al recuadro de chat
+        text_chat.text += message + "\n";
     }
 
     Rectangle {
@@ -29,27 +44,25 @@ Window {
         radius: 6
         border.width: 2
         border.color: "#599899"
-    }
 
-    Rectangle {
-        id: rectangle1
-        x: 432
-        y: 127
-        width: 152
-        height: 259
-        color: "#d7eef1"
-        radius: 6
-        border.color: "#599899"
-        border.width: 2
+        Text {
+            id: text_chat
+            x: 8
+            y: 8
+            text: qsTr("")
+            font.pixelSize: 12
+        }
     }
 
     TextField {
-        id: textField
+        id: text_send
         x: 54
         y: 412
+        visible: false
         width: 335
         height: 40
         placeholderText: qsTr("Write here...")
+        enabled: nickRequested // Habilita el TextField cuando se solicita el nick
     }
 
     Text {
@@ -59,6 +72,9 @@ Window {
         text: qsTr("List of Connect")
         font.pixelSize: 12
     }
+
+    // Propiedad para almacenar el nick ingresado por el usuario
+    property string nickInput: ""
 
     Text {
         id: element1
@@ -89,6 +105,23 @@ Window {
     // Crear una instancia de TCPSocket
     TCPSocket {
         id: tcpSocket // asignamos un ID para referenciarlo
+        // Función de manejo de eventos cuando la conexión se establece correctamente
+        onConnected: {
+            // Habilitar el campo de texto text_mensaje
+            text_send.visible = true
+            console.log("Conectado al Servidor");
+        }
+        onRead: {
+            var receivedMessage = message.toString().trim();
+            console.log("Mensaje recibido:", receivedMessage);
+            if (!window.nickRequested) {
+                // Si el servidor solicita el nick, establecer la bandera y agregar la solicitud al área de chat
+                window.nickRequested = true;
+                text_chat.text += "Por favor ingresa tu nick:" + "\n";
+            } else {
+                text_chat.text += receivedMessage + "\n";
+            }
+        }
     }
 
     Button {
