@@ -51,6 +51,13 @@ protected:
         QObject::connect(clientSocket, &QTcpSocket::disconnected, this, [this, user]() {
             usuarios.removeOne(user);
             user->deleteLater();
+            listaUsuarios.clear();
+            for (Usuario* u : usuarios) {
+                listaUsuarios << u->obtenerNick();
+            }
+            broadcast(QString("USERS: " + listaUsuarios.join(", ")));
+            // Notificar a todos los usuarios que un usuario se ha desconectado
+            broadcast(QString("%1 se ha desconectado.").arg(user->obtenerNick()));
         });
     }
 
@@ -62,6 +69,11 @@ private slots:
             if (user->obtenerNick().isEmpty()) {
                 // Si el usuario no tiene un nick, establecerlo
                 user->establecerNick(message);
+                listaUsuarios.clear();
+                for (Usuario* u : usuarios) {
+                    listaUsuarios << u->obtenerNick();
+                }
+                broadcast(QString("USERS: " + listaUsuarios.join(", ")));
                 broadcast(QString("%1 se ha unido al chat.").arg(user->obtenerNick()));
             } else {
                 // Si tiene un nick, enviar el mensaje a todos los usuarios
@@ -72,6 +84,7 @@ private slots:
 
 private:
     QList<Usuario*> usuarios;
+    QStringList listaUsuarios;
 
     void sendToUser(Usuario* user, const QString &message) {
         user->obtenerSocket()->write(message.toUtf8());
