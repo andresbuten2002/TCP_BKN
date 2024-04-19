@@ -20,19 +20,13 @@ Window {
         height: 40
         text: qsTr("Send")
         onClicked: {
-            var message = text_send.text;
-            console.log("Enviando mensaje:", message);
-            tcpSocket.write(message + "\n");
-            //updateChat("Yo:" + message)
+            var messagesend = text_send.text;
+            console.log("Enviando mensaje:", messagesend);
+            tcpSocket.write(messagesend + "\n");
             text_send.text = "" // Limpiar el campo de texto después de enviar el mensaje
         }
-        //enabled: nickRequested // El botón solo está habilitado cuando se solicita el nick
     }
 
-    function updateChat(message) {
-        // Agrega el mensaje al recuadro de chat
-        text_chat.text += message + "\n";
-    }
 
     Rectangle {
         id: rectangle
@@ -45,13 +39,22 @@ Window {
         border.width: 2
         border.color: "#599899"
 
-        Text {
-            id: text_chat
-            x: 8
-            y: 8
-            text: qsTr("")
-            font.pixelSize: 12
-        }
+        ScrollView {
+                        id: scrollView
+                        anchors.fill: parent
+                        clip: true // Asegura que el contenido no se extienda más allá del ScrollView
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOn // Muestra la barra de desplazamiento vertical
+                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff // No muestra la barra de desplazamiento horizontal
+
+                        TextArea {
+                            id: text_chat
+                            wrapMode: TextArea.Wrap
+                            text: qsTr("")
+                            font.pixelSize: 12
+                            readOnly: true // El usuario no puede editar el texto
+                        }
+                        property int maxLines: 5 // Máximo número de líneas permitidas en el área de chat
+                    }
     }
 
     TextField {
@@ -62,7 +65,6 @@ Window {
         width: 335
         height: 40
         placeholderText: qsTr("Write here...")
-        //enabled: nickRequested // Habilita el TextField cuando se solicita el nick
     }
 
     Text {
@@ -115,13 +117,23 @@ Window {
             // Actualizar la interfaz de usuario
             updateConnectedClients();
         }
+
         onRead: {
             var receivedMessage = message.toString().trim();
             console.log("Mensaje recibido:", receivedMessage);
 
-            text_chat.text += receivedMessage + "\n";
-            //window.nickRequested = true;
+            if (receivedMessage.startsWith("USERS")) {
+                // Mensaje de lista de usuarios conectados
+                var userList = receivedMessage.substring(6).trim(); // Eliminar "USERS" del inicio
+                conectados.text === userList ;
+                // Aquí puedes procesar userList para actualizar la lista de usuarios conectados
+                console.log("Lista de usuarios conectados:", userList);
+            } else {
+                // Mensaje de chat normal
+                text_chat.text += receivedMessage + "\n";
+            }
         }
+
     }
 
     Button {
