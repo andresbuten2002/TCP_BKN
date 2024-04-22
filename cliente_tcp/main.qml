@@ -10,8 +10,6 @@ Window {
     height: 480
     title: qsTr("Chat Grupal")
 
-    //property bool nickRequested: false // Bandera para rastrear si el servidor ha solicitado el nick
-
     Button {
         id: button_send
         x: 432
@@ -75,9 +73,6 @@ Window {
         font.pixelSize: 12
     }
 
-    // Propiedad para almacenar el nick ingresado por el usuario
-    property string nickInput: ""
-
     Text {
         id: element1
         x: 208
@@ -112,10 +107,6 @@ Window {
             // Habilitar el campo de texto text_mensaje
             text_send.visible = true
             console.log("Conectado al Servidor");
-            // Agregar el nick del cliente recién conectado a la lista
-            connectedClients.push(text_send.text);
-            // Actualizar la interfaz de usuario
-            updateConnectedClients();
         }
 
         onRead: {
