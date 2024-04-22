@@ -110,20 +110,20 @@ Window {
         }
 
         onRead: {
-            var receivedMessage = message.toString().trim();
-            console.log("Mensaje recibido:", receivedMessage);
+                    var receivedMessage = message.toString().trim();
+                    console.log("Mensaje recibido:", receivedMessage);
 
-            if (receivedMessage.startsWith("USERS")) {
-                // Mensaje de lista de usuarios conectados
-                var userList = receivedMessage.split("USERS:")[1].trim(); //.substring(6).trim(); // Eliminar "USERS" del inicio
-                conectados.text === userList + "\n";
-                // Aquí puedes procesar userList para actualizar la lista de usuarios conectados
-                console.log("Lista de usuarios conectados:", userList);
-            } else {
-                // Mensaje de chat normal
-                text_chat.text += receivedMessage + "\n";
-            }
-        }
+                    if (receivedMessage.startsWith("USERS:")) {
+                        // Mensaje de lista de usuarios conectados
+                        var userList = receivedMessage.substring("USERS:".length).trim(); // Eliminar "USERS:" del inicio
+                        conectados.text = userList + "\n";
+                        // Aquí puedes procesar userList para actualizar la lista de usuarios conectados
+                        console.log("Lista de usuarios conectados:", userList);
+                    } else {
+                        // Mensaje de chat normal
+                        text_chat.text += receivedMessage + "\n";
+                    }
+                }
 
     }
 
