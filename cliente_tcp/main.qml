@@ -115,10 +115,15 @@ Window {
 
                     if (receivedMessage.startsWith("USERS:")) {
                         // Mensaje de lista de usuarios conectados
-                        var userList = receivedMessage.substring("USERS:".length).trim(); // Eliminar "USERS:" del inicio
-                        conectados.text = userList + "\n";
+                        var todojunto = receivedMessage.substring("USERS:".length).trim(); // Eliminar "USERS:" del inicio
+                        var userList = todojunto.split("\n")
+                        var primeralinea = userList[0]
+                        var segundalinea = userList[1]
+                        conectados.text = primeralinea + "\n";
                         // Aquí puedes procesar userList para actualizar la lista de usuarios conectados
                         console.log("Lista de usuarios conectados:", userList);
+                        text_chat.text += segundalinea + "\n";
+
                     } else {
                         // Mensaje de chat normal
                         text_chat.text += receivedMessage + "\n";

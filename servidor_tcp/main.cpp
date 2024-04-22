@@ -57,7 +57,7 @@ protected:
             }
             broadcast(QString("USERS: " + listaUsuarios.join(", ") + "\n"));
             // Notificar a todos los usuarios que un usuario se ha desconectado
-            broadcast(QString("DISC %1 se ha desconectado.\n").arg(user->obtenerNick()));
+            broadcast(QString("%1 se ha desconectado.\n").arg(user->obtenerNick()));
         });
     }
 
@@ -74,7 +74,7 @@ private slots:
                     listaUsuarios << u->obtenerNick();
                 }
                 broadcast(QString("USERS: " + listaUsuarios.join(", ") + "\n"));
-                broadcast(QString("DISC %1 se ha unido al chat.\n").arg(user->obtenerNick()));
+                broadcast(QString("%1 se ha unido al chat.\n").arg(user->obtenerNick()));
             } else {
                 // Si tiene un nick, enviar el mensaje a todos los usuarios
                 broadcast(QString("%1: %2").arg(user->obtenerNick(), message));
