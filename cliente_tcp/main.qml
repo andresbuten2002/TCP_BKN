@@ -115,8 +115,8 @@ Window {
 
             if (receivedMessage.startsWith("USERS")) {
                 // Mensaje de lista de usuarios conectados
-                var userList = receivedMessage.substring(6).trim(); // Eliminar "USERS" del inicio
-                conectados.text === userList ;
+                var userList = receivedMessage.split("USERS:")[1].trim(); //.substring(6).trim(); // Eliminar "USERS" del inicio
+                conectados.text === userList + "\n";
                 // Aquí puedes procesar userList para actualizar la lista de usuarios conectados
                 console.log("Lista de usuarios conectados:", userList);
             } else {
@@ -156,12 +156,22 @@ Window {
         radius: 6
         border.color: "#599899"
         border.width: 2
-        Text {
-            id: conectados
-            x: 8
-            y: 8
-            text: qsTr("")
-            font.pixelSize: 12
+
+        ScrollView {
+                        id: scrollView_lista
+                        anchors.fill: parent
+                        clip: true // Asegura que el contenido no se extienda más allá del ScrollView
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOn // Muestra la barra de desplazamiento vertical
+                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff // No muestra la barra de desplazamiento horizontal
+
+                        TextArea {
+                            id: conectados
+                            wrapMode: TextArea.Wrap
+                            text: qsTr("")
+                            font.pixelSize: 12
+                            readOnly: true // El usuario no puede editar el texto
+                        }
+                        property int maxLines: 5 // Máximo número de líneas permitidas en el área de chat
+                    }
         }
-    }
 }
