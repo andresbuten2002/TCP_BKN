@@ -3,7 +3,7 @@ import paho.mqtt.client #libreria
 
 def on_connect(client, userdata, flags, rc):
 	print('connected (%s)' % client._client_id)
-	client.subscribe(topic='casa/cocina/heladera', qos=2)
+	client.subscribe(topic='labredes/aula', qos=2)
 
 def on_message(client, userdata, message):
 	print('------------------------------')
@@ -15,7 +15,7 @@ def main():
 	client = paho.mqtt.client.Client(client_id='bocha-subs', clean_session=False)
 	client.on_connect = on_connect
 	client.on_message = on_message
-	client.connect(host='127.0.0.1', port=1883)
+	client.connect(host='192.168.5.168', port=1883)
 	client.loop_forever()
 
 if __name__ == '__main__':
