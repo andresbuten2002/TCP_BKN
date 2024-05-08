@@ -15,7 +15,7 @@ El QoS (Quality of Service o Calidad de Servicio) en MQTT (Message Queuing Telem
 
 ## docker mosquitto
 - probar (hecha por mi): docker run -it -v /etc/mosquitto/mosquitto.conf:/etc/mosquitto/mosquitto.conf -p 1883:1883 -d mosquitto:1.0
-
+https://cedalo.com/blog/mosquitto-docker-configuration-ultimate-guide/
 ## docker node-red
 https://nodered.org/docs/getting-started/docker
 
@@ -23,3 +23,5 @@ https://nodered.org/docs/getting-started/docker
 https://www.emqx.io/docs/en/latest/deploy/install-docker.html
 CAMBIAMOS PUERTO 1883->>1884 para que no se superonga con mosquitto
 > docker run -d --name emqx -p 1884:1884 -p 8083:8083 -p 8084:8084 -p 8883:8883 -p 18083:18083  emqx:5.6.1 
+
+
