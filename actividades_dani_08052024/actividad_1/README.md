@@ -68,9 +68,10 @@ docker-compose up -d
 ```
 Cabe mencionar de gran importancia dar permisos necesarios a la carpeta `/data` con la cual se creó el volumen.
 ```bash
-chmod o+w data
+sudo chmod o+w data
 ```
 
 Una vez que ya se tienen los contenedores levantados y corriendo, se puede acceder al flujo de Node-Red para agregar publicadores y suscriptores según el tópico deseado.
 
 Par acceder al mismo, en un navegador nos situamos en la dirección donde esta levantado el contenedor y el puerto 1880.
+
