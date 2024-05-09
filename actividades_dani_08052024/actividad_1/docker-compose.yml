@@ -18,33 +18,26 @@ services:
         aliases:
         - node1.emqx.io
     ports:
-      - 1884:1883
+      - 1883:1883
       - 8083:8083
       - 8084:8084
       - 8883:8883
       - 18083:18083 
-    # volumes:
-    #   - $PWD/emqx1_data:/opt/emqx/data
 
 #
-  mosquitto:
-    image: eclipse-mosquitto:2
-    container_name: mosquitto 
-    volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
-      #- ./mosquitto/data:/mosquitto/data
-      #- ./mosquitto/log:/mosquitto/log
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Amsterdam
     ports:
-      - 1883:1883
-      #- 8883:8883
-      - 9001:9001
+      - "1880:1880"
     networks:
-      - mosquitto-bridge
-
+      - node-red-net
+    volumes:
+      - ./data:/data
 
 networks:
   emqx-bridge:
     driver: bridge
-  mosquitto-bridge:
-    #name: mosquitto_net
+  node-red-net:
     driver: bridge
