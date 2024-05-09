@@ -24,6 +24,7 @@ Objetivo general: Implementar un sistema integral de monitoreo de IoT que permit
 https://cedalo.com/blog/mosquitto-docker-configuration-ultimate-guide/
 ### docker node-red
 https://nodered.org/docs/getting-started/docker
+chmod o+w data
 
 ### docker emqx 
 https://www.emqx.io/docs/en/latest/deploy/install-docker.html
