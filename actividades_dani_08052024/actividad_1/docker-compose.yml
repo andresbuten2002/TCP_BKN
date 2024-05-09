@@ -2,22 +2,22 @@ version: '3'
 
 services:
   emqx:
-    image: emqx:5.6.1
-    container_name: emqx
-    environment:
-    - "EMQX_NODE_NAME=emqx@node1.emqx.io"
-    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
-    healthcheck:
+    image: emqx:5.6.1     #imagen de DOkcer que se utilizará para el servicio
+    container_name: emqx  #nombre del contenedor
+    environment:          #creacion de variables de entorno para configurar el servicio
+    - "EMQX_NODE_NAME=emqx@node1.emqx.io"   #nombre del nodo EMQX
+    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"   #estrategia de descubrimiento de clúster EMQX
+    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"   #nodos semilla del clúster EMQX
+    healthcheck:  #comprobación de salud del contenedor
       test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
-      interval: 5s
-      timeout: 25s
-      retries: 5
-    networks:
+      interval: 5s  #intervalo entre comprobaciones
+      timeout: 25s  #tiempo maximo de espera para una comprobacion de salud
+      retries: 5    #intentos de comprobación de salud
+    networks:     #configuración de red
       emqx-bridge:
         aliases:
         - node1.emqx.io
-    ports:
+    ports:      #mapeo de puertos
       - 1883:1883
       - 8083:8083
       - 8084:8084
@@ -36,7 +36,7 @@ services:
     volumes:
       - ./data:/data
 
-networks:
+networks: #definicion de redes
   emqx-bridge:
     driver: bridge
   node-red-net:
